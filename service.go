@@ -13,5 +13,12 @@ type Service struct {
 func (s *Service) Dial(cfg Config) error {
 	var err error
 	s.DB, err = buntdb.Open(cfg.Path)
-	return err
+	if err != nil {
+		return err
+	}
+	return s.DB.CreateSpatialIndex(
+		cfg.IndexName,
+		cfg.IndexPattern,
+		buntdb.IndexRect,
+	)
 }

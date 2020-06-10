@@ -6,7 +6,9 @@ import (
 
 // Config is buntdb structure config.
 type Config struct {
-	Path string
+	Path         string
+	IndexName    string
+	IndexPattern string
 }
 
 // Equal returns is both configs are equal.
@@ -27,6 +29,22 @@ func (c *Config) Dial(fileconf interface{}) error {
 	}
 	if c.Path, ok = cPath.(string); !ok {
 		return errors.New("key path invalid. must be string")
+	}
+
+	cIndexName, ok := fconf["index_name"]
+	if !ok {
+		return errors.New("missing key index_name")
+	}
+	if c.IndexName, ok = cIndexName.(string); !ok {
+		return errors.New("key index_name invalid. must be string")
+	}
+
+	cIndexPattern, ok := fconf["index_pattern"]
+	if !ok {
+		return errors.New("missing key index_pattern")
+	}
+	if c.IndexPattern, ok = cIndexPattern.(string); !ok {
+		return errors.New("key index_pattern invalid. must be string")
 	}
 
 	return nil
