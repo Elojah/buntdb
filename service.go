@@ -7,6 +7,7 @@ import (
 // Service embed a connected buntdb client.
 type Service struct {
 	*buntdb.DB
+	Config
 }
 
 // Dial connects client to external buntdb service.
@@ -16,6 +17,7 @@ func (s *Service) Dial(cfg Config) error {
 	if err != nil {
 		return err
 	}
+	s.Config = cfg
 	return s.DB.CreateSpatialIndex(
 		cfg.IndexName,
 		cfg.IndexPattern,
